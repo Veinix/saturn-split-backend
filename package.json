@@ -1,0 +1,29 @@
+{
+    "dependencies": {
+        "@fastify/cors": "^11.0.1",
+        "@supabase/supabase-js": "^2.49.10",
+        "dotenv": "^16.5.0",
+        "fastify": "^5.3.3",
+        "fastify-cors": "^6.1.0",
+        "postgres": "^3.4.7"
+    },
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "build": "tsc",
+        "start": "node dist/index.js"
+    },
+    "type": "module",
+    "devDependencies": {
+        "@types/node": "^22.15.29",
+        "supabase": "^2.24.3",
+        "tsx": "^4.19.4",
+        "typescript": "^5.8.3"
+    },
+    "name": "saturn-split-backend",
+    "version": "1.0.0",
+    "main": "server.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": ""
+}

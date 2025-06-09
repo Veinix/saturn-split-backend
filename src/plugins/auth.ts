@@ -1,4 +1,5 @@
-// src/plugins/auth.ts
+import { configDotenv } from "dotenv";
+configDotenv()
 import { FastifyPluginAsync, FastifyRequest, FastifyReply, preHandlerHookHandler } from 'fastify'
 import fp from 'fastify-plugin'
 import { createClient } from '@supabase/supabase-js'

@@ -1,11 +1,13 @@
 import { configDotenv } from "dotenv";
 configDotenv()
+
 import fastifyCors from "@fastify/cors";
 import fastify, { FastifyInstance } from "fastify";
 import groupRoutes from "./1-routes/groupRoutes";
 import testRoutes from "./1-routes/testRoutes";
 import auth from "./plugins/auth";
 import authRoutes from "./1-routes/authRoutes";
+import db from "./plugins/db";
 
 const app: FastifyInstance = fastify({
     logger: true
@@ -16,9 +18,12 @@ const start = async () => {
         // * Registering Plugins
         // CORS
         await app.register(fastifyCors, { origin: "*" });
-        
+
         // Auth
         await app.register(auth);
+
+        // Database
+        await app.register(db);
 
         // Routes
         await app.register(authRoutes, { prefix: "/api" })

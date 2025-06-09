@@ -1,5 +1,6 @@
 import { configDotenv } from "dotenv";
 configDotenv()
+
 import fp from 'fastify-plugin';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 

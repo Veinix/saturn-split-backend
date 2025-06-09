@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { getAllGroups, getUserGroups } from "../3-services/groupsService";
+import groupService from "../3-services/groupsService";
 
 export async function fetchGroups(_req: FastifyRequest, reply: FastifyReply) {
     try {
-        const groups = await getAllGroups();
+        const groups = await groupService.getAllGroups(reply.server.supabase);
         console.log(groups)
         reply.code(200).send(groups);
     } catch (err) {
@@ -15,7 +15,7 @@ export async function fetchGroups(_req: FastifyRequest, reply: FastifyReply) {
 export async function fetchMyGroups(req: FastifyRequest, reply: FastifyReply) {
     try {
         const userId = req.user.id as string;
-        const groups = await getUserGroups(userId);
+        const groups = await groupService.getUserGroups(userId, reply.server.supabase);
         return reply.send(groups);
     } catch (err: any) {
         req.log.error(err);

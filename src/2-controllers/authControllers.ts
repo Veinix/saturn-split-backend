@@ -1,29 +1,29 @@
 
 import { FastifyReply, FastifyRequest } from 'fastify';
 import authService from '../3-services/authService';
+import { LoginBody, RegisterBody } from '../types/auth.types';
 
 export async function register(
     request: FastifyRequest<{
-        Body: { email: string; password: string };
+        Body: RegisterBody;
     }>,
     reply: FastifyReply
 ) {
-    const { email, password } = request.body;
-    const result = await authService.register(request.server.supabase, email, password);
+    const result = await authService.register(request.server.supabase, request.body);
     if (result.error) {
         return reply.status(400).send({ error: result.error.message });
     }
-    return reply.send({ user: result.user });
+    return reply.send(result);
 }
 
 export async function login(
     request: FastifyRequest<{
-        Body: { email: string; password: string };
+        Body: LoginBody;
     }>,
     reply: FastifyReply
 ) {
-    const { email, password } = request.body;
-    const result = await authService.login(request.server.supabase, email, password);
+    const { username, password } = request.body;
+    const result = await authService.login(request.server.supabase, username, password);
     if (result.error) {
         return reply.status(401).send({ error: result.error.message });
     }

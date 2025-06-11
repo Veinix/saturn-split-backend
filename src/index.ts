@@ -5,9 +5,9 @@ import fastifyCors from "@fastify/cors";
 import fastify, { FastifyInstance } from "fastify";
 import groupRoutes from "./1-routes/groupRoutes";
 import testRoutes from "./1-routes/testRoutes";
-import auth from "./plugins/auth";
 import authRoutes from "./1-routes/authRoutes";
 import db from "./plugins/db";
+import jwtAuth from "./plugins/jwtAuth";
 
 const app: FastifyInstance = fastify({
     logger: true
@@ -19,8 +19,8 @@ const start = async () => {
         // CORS
         await app.register(fastifyCors, { origin: "*" });
 
-        // Auth
-        await app.register(auth);
+        // JWT & Auth
+        await app.register(jwtAuth);
 
         // Database
         await app.register(db);

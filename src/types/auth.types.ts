@@ -1,4 +1,4 @@
-import { UserAuth, PublicUser } from "./db.types";
+import { UserAuth } from "./db.types";
 
 export enum UserRoles {
     Developer = "developer",
@@ -9,6 +9,7 @@ export enum UserRoles {
 export type RegisterBody = UserAuth & {
     favorite_color: string | null,
     username: string,
+    role: UserRoles | null,
 }
 
 export type LoginBody = {

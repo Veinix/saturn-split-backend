@@ -1,35 +1,33 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import type { User, Session, AuthApiError, AuthError } from '@supabase/supabase-js';
-import { RegisterBody } from '../types/auth.types';
+import type { User, Session, AuthError } from '@supabase/supabase-js';
+import { JWTPayload, RegisterBody } from '../types/auth.types';
 import { hash } from 'argon2';
 import { Database } from '../types/database.types';
-import jwt, { fastifyJwt } from '@fastify/jwt';
+import jwtUtilities from "../5-utilities/jwtUtilitites";
+
 class AuthService {
 
     async register(
         supabase: SupabaseClient<Database>,
         body: RegisterBody
     ): Promise<{ token?: string; error?: Error }> {
-        // 1️⃣ Hash the password
         const hashedPassword = await hash(body.password);
 
-        // 2️⃣ Insert into private_user_details
-        const { data: priv, error: privErr } = await supabase
+        const { data: privData, error: privErr } = await supabase
             .from("private_user_details")
             .insert({
                 full_name: body.full_name,
                 hashed_password: hashedPassword,
                 phone_number: body.phone_number ?? null,
-                role: body.role ?? "user",
             })
             .select("user_id")
             .single();
 
-        if (privErr || !priv) {
+        if (privErr || !privData) {
             return { error: privErr ?? new Error("Failed to insert private details") };
         }
 
-        const userId = priv.user_id;
+        const userId = privData.user_id;
 
         const { error: pubErr } = await supabase
             .from("public_users")
@@ -37,21 +35,27 @@ class AuthService {
                 id: userId,
                 username: body.username,
                 favorite_color: body.favorite_color ?? null,
+                role: body.role ?? "user",
+
             });
 
         if (pubErr) return { error: pubErr };
 
         // Create the JWT payload & sign
         const nowSec = Math.floor(Date.now() / 1000);
-        const payload = {
-            sub: userId,
-            role: body.role ?? "user",
-            username: body.username,
+        const payload: JWTPayload = {
+            userData: {
+                partialName: body.full_name?.split(" ")[0] ?? "",
+                role: body.role ?? "user",
+                userId: userId,
+                username: body.username,
+                favoriteColor: body.favorite_color ?? "orange",
+            },
             iat: nowSec,
             exp: nowSec + 60 * 60,   // 1 hour
         };
 
-        // const token = fastifyJwt.si
+        const token = jwtUtilities.sign(payload)
         return { token };
     }
 

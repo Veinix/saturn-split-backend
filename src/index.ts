@@ -4,13 +4,21 @@ configDotenv()
 import fastifyCors from "@fastify/cors";
 import fastify, { FastifyInstance } from "fastify";
 import groupRoutes from "./1-routes/groupRoutes";
-import testRoutes from "./1-routes/testRoutes";
 import authRoutes from "./1-routes/authRoutes";
 import db from "./plugins/db";
-import jwtAuth from "./plugins/jwtAuth";
+import testRoutes from "./1-routes/testRoutes";
 
 const app: FastifyInstance = fastify({
-    logger: true
+    logger: {
+        transport: {
+            target: 'pino-pretty',
+            options: {
+                colorize: true,
+                translateTime: 'HH:MM:ss',
+                ignore: 'pid,hostname', // optional: removes less relevant fields
+            }
+        }
+    }
 })
 
 const start = async () => {
@@ -19,22 +27,18 @@ const start = async () => {
         // CORS
         await app.register(fastifyCors, { origin: "*" });
 
-        // JWT & Auth
-        await app.register(jwtAuth);
-
         // Database
         await app.register(db);
 
         // Routes
         await app.register(authRoutes, { prefix: "/api" })
         await app.register(groupRoutes, { prefix: "/api" });
-        await app.register(testRoutes)
+        await app.register(testRoutes);
 
         // Initialize
         await app.listen({ port: 3000 });
-        console.log("Server running on http://localhost:3000");
     } catch (err) {
-        console.error(err)
+        app.log.error(err);
         process.exit(1);
     }
 };

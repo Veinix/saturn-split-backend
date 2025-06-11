@@ -22,6 +22,8 @@ export type GroupMember = {
 export type PublicUser = {
     id: string,
     username: string,
+    role: UserRoles,
+
     favorite_color: string | null,
 }
 
@@ -29,7 +31,6 @@ export type UserAuth = {
     password: string,
     phone_number: string | null,
     full_name: string,
-    role: UserRoles,
     last_login_at?: string,
 }
 

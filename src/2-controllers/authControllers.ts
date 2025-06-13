@@ -22,12 +22,11 @@ export async function login(
     }>,
     reply: FastifyReply
 ) {
-    const { username, password } = request.body;
-    const result = await authService.login(request.server.supabase, username, password);
+    const result = await authService.login(request.server.supabase, request.body);
     if (result.error) {
         return reply.status(401).send({ error: result.error.message });
     }
-    return reply.send({ session: result.session });
+    return reply.send(result);
 }
 
 export async function logout(

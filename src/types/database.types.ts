@@ -73,7 +73,6 @@ export type Database = {
           hashed_password: string
           last_login_at: string | null
           phone_number: string | null
-          role: string
           user_id: string
         }
         Insert: {
@@ -81,7 +80,6 @@ export type Database = {
           hashed_password: string
           last_login_at?: string | null
           phone_number?: string | null
-          role?: string
           user_id?: string
         }
         Update: {
@@ -89,39 +87,41 @@ export type Database = {
           hashed_password?: string
           last_login_at?: string | null
           phone_number?: string | null
-          role?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "private_user_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "public_users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       public_users: {
         Row: {
           created_at: string
           favorite_color: string | null
           id: string
+          role: string
           username: string
         }
         Insert: {
           created_at?: string
           favorite_color?: string | null
           id?: string
-          username: string
+          role?: string
+          username?: string
         }
         Update: {
           created_at?: string
           favorite_color?: string | null
           id?: string
-          username?: string
+          role?: string
+          username?: string 
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_users_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "private_user_details"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       transactions: {
         Row: {
@@ -174,6 +174,21 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_codes: {
+        Row: {
+          created_at: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
       }
     }
     Views: {

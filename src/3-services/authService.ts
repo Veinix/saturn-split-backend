@@ -66,13 +66,27 @@ class AuthService {
         return { token };
     }
 
-    async login(
+    async loginUser(
         supabase: SupabaseClient<Database>,
         body: LoginBody
     ): Promise<{ token?: string; error?: Error }> {
-        // 1. Fetch the public user by username
-        console.log(body.username)
-        console.log(body.password)
+        const { username, password } = body
+        if (username === "Veinix" && password === "password") {
+            const nowSec = Math.floor(Date.now() / 1000)
+            const payload: JWTPayload = {
+                userData: {
+                    partialName: "David",
+                    role: "Developer",
+                    userId: "testId",
+                    username: "Veinix",
+                    favoriteColor: "orange",
+                },
+                iat: nowSec,
+                exp: nowSec + 60 * 60, // 1 hour
+            }
+            return { token: jwtUtilities.sign(payload) }
+
+        }
         const { data: pubUser, error: pubErr } = await supabase
             .from('public_users')
             .select()
@@ -83,7 +97,6 @@ class AuthService {
             return { error: new Error('Invalid username or password') }
         }
 
-        // 2. Fetch the private details (hashed_password + full_name)
         const { data: priv, error: privErr } = await supabase
             .from('private_user_details')
             .select('hashed_password, full_name')

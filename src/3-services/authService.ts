@@ -71,22 +71,6 @@ class AuthService {
         body: LoginBody
     ): Promise<{ token?: string; error?: Error }> {
         const { username, password } = body
-        if (username === "Veinix" && password === "password") {
-            const nowSec = Math.floor(Date.now() / 1000)
-            const payload: JWTPayload = {
-                userData: {
-                    partialName: "David",
-                    role: "Developer",
-                    userId: "testId",
-                    username: "Veinix",
-                    favoriteColor: "orange",
-                },
-                iat: nowSec,
-                exp: nowSec + 60 * 60, // 1 hour
-            }
-            return { token: jwtUtilities.sign(payload) }
-
-        }
         const { data: pubUser, error: pubErr } = await supabase
             .from('public_users')
             .select()

@@ -1,55 +1,44 @@
-// import { configDotenv } from "dotenv";
-// configDotenv()
-// import { FastifyPluginAsync, FastifyRequest, FastifyReply, preHandlerHookHandler } from 'fastify'
-// import fp from 'fastify-plugin'
-// import { createClient } from '@supabase/supabase-js'
+import { configDotenv } from "dotenv";
+configDotenv()
+import { FastifyPluginAsync, FastifyRequest, FastifyReply, preHandlerHookHandler } from 'fastify'
+import fp from 'fastify-plugin'
+import authService from "../3-services/authService";
+import jwtUtilities from "../5-utilities/jwtUtilitites";
 
-// // 1️⃣ Tell TS about request.user
-// declare module 'fastify' {
-//     interface FastifyRequest {
-//         user: {
-//             id: string
-//             email?: string
-//             [key: string]: any
-//         }
-//     }
+// 1️⃣ Tell TS about request.user
+declare module 'fastify' {
+    interface FastifyRequest {
+        userId: string
+    }
 
-//     // 2️⃣ Tell TS about fastify.authenticate
-//     interface FastifyInstance {
-//         authenticate: preHandlerHookHandler
-//     }
-// }
+    // 2️⃣ Tell TS about fastify.authenticate
+    interface FastifyInstance {
+        authenticate: preHandlerHookHandler
+    }
+}
 
-// const authPlugin: FastifyPluginAsync = async (fastify) => {
-//     // Initialize Supabase Admin client
-//     const supabaseAdmin = createClient(
-//         process.env.SUPABASE_URL!,
-//         process.env.SUPABASE_SERVICE_ROLE_KEY!
-//     )
+const authPlugin: FastifyPluginAsync = async (fastify) => {
 
-//     // 3️⃣ Decorate the instance with our preHandler
-//     fastify.decorate(
-//         'authenticate',
-//         // Note: signature matches Fastify's `preHandler` hook
-//         async (request: FastifyRequest, reply: FastifyReply) => {
-//             const auth = request.headers.authorization
-//             if (!auth?.startsWith('Bearer ')) {
-//                 return reply.status(401).send({ message: 'Missing bearer token' })
-//             }
+    fastify.decorate(
+        'authenticate',
+        async (request: FastifyRequest, reply: FastifyReply) => {
+            const auth = request.headers.authorization
+            if (!auth?.startsWith('Bearer ')) {
+                return reply.status(401).send({ message: 'Missing bearer token' })
+            }
+            const token = auth.slice(7)
+            const verified = jwtUtilities.verify(token)
+            console.log("Verified", verified)
+            if (!verified) return reply.status(401).send({ message: 'Invalid or expired token' })
 
-//             const token = auth.slice(7)
-//             const { data: { user }, error } = await supabaseAdmin.auth.getUser(token)
+            const data = await authService.getUserByToken(fastify.supabase, token)
+            if (!data) return reply.status(401).send({ message: 'Invalid or expired token' })
 
-//             if (error || !user) {
-//                 return reply.status(401).send({ message: 'Invalid or expired token' })
-//             }
+            request.userId = data.id
+        }
+    )
+}
 
-//             request.user = user
-//         }
-//     )
-// }
-
-// export default fp(authPlugin, {
-//     // ensure this plugin runs before routes try to use `authenticate`
-//     name: 'authPlugin',
-// })
+export default fp(authPlugin, {
+    name: 'authPlugin',
+})

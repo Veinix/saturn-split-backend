@@ -1,24 +1,25 @@
 import { configDotenv } from "dotenv";
-import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
 configDotenv()
+import jwt, { JwtPayload, Secret, SignOptions } from "jsonwebtoken";
+import { UserJWTPayload } from "../types/auth.types";
 
 class JWTUtilities {
-    private secretKey: string = process.env.JWT_SECRET!
-    private expiresIn: string = "1h";
+    private secretKey: Secret = process.env.JWT_SECRET!
 
     public sign(payload: object, options?: SignOptions): string {
         if (!this.secretKey) throw new Error("JWT secret key is not defined");
 
-        const token = jwt.sign(payload, this.secretKey,)
+        const token = jwt.sign(payload, this.secretKey, { expiresIn: '1h' });
         return token
     }
 
-    public verify<T = JwtPayload>(token: string): T {
+    public verify<T = UserJWTPayload>(token: string): T {
         return jwt.verify(token, this.secretKey) as T;
     }
 
     public decode<T = JwtPayload>(token: string): T | null {
-        return jwt.decode(token) as T | null;
+        const decoded = jwt.decode(token) as T | null;
+        return decoded
     }
 
 }

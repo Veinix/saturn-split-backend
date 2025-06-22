@@ -7,6 +7,7 @@ import groupRoutes from "./1-routes/groupRoutes";
 import authRoutes from "./1-routes/authRoutes";
 import db from "./plugins/db";
 import testRoutes from "./1-routes/testRoutes";
+import auth from "./plugins/auth";
 
 const app: FastifyInstance = fastify({
     logger: {
@@ -27,6 +28,9 @@ const start = async () => {
         // CORS
         await app.register(fastifyCors, { origin: "*" });
 
+        // Authentication
+        await app.register(auth)
+
         // Database
         await app.register(db);
 
@@ -36,7 +40,10 @@ const start = async () => {
         await app.register(testRoutes);
 
         // Initialize
-        await app.listen({ port: 3000 });
+        await app.listen({
+            port: parseInt(process.env.BACKEND_PORT as string),
+            host: process.env.BACKEND_HOST,
+        });
     } catch (err) {
         app.log.error(err);
         process.exit(1);

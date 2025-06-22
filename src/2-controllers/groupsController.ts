@@ -14,11 +14,31 @@ export async function fetchGroups(_req: FastifyRequest, reply: FastifyReply) {
 
 export async function fetchMyGroups(req: FastifyRequest, reply: FastifyReply) {
     try {
-        const userId = req.user.id as string;
+        const userId = req.userId
         const groups = await groupService.getUserGroups(userId, reply.server.supabase);
         return reply.send(groups);
     } catch (err: any) {
         req.log.error(err);
         return reply.status(500).send({ message: err.message });
     }
+}
+
+export async function fetchSingleGroup(req: FastifyRequest<{ Params: { groupId: string } }>, reply: FastifyReply) {
+    try {
+        const { groupId } = req.params
+        const singleGroupData = await groupService.getSingleGroup(groupId, reply.server.supabase)
+        return reply.send(singleGroupData)
+    } catch (err: any) {
+        req.log.error(err)
+        return reply.status(500).send({ message: err.message })
+    }
+}
+
+export async function isUserGroupMember(req: FastifyRequest, reply: FastifyReply) {
+    // try {
+    //     const userId = req.userId
+    //     const groupId = req.params?.groupId ?
+    // } catch (error) {
+
+    // }
 }

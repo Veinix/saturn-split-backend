@@ -1,5 +1,4 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import supabase from "../plugins/db";
 
 class GroupsService {
     async getAllGroups(
@@ -16,30 +15,31 @@ class GroupsService {
         userId: string,
         supabase: SupabaseClient
     ) {
-        const { data, error } = await supabase
+        const { data: groups, error } = await supabase
             .from('groups')
-            .select(`
-        id,
-        creator_id,
-        name,
-        description,
-        group_icon,
-        members:group_members(user_id),
-        transactions:transactions(
-          id,
-          lender,
-          borrower,
-          amount,
-          transaction_type,
-          transaction_date
-        )
-      `)
-            .eq('members.user_id', userId);
+            .select('*, group_members!inner(user_id)')
+            .eq('group_members.user_id', userId);
 
         if (error) {
             throw new Error(`Could not fetch groups: ${error.message}`);
         }
-        return data;
+        return groups;
+    }
+
+    async getSingleGroup(
+        groupId: string,
+        supabase: SupabaseClient
+    ) {
+        const { data: singleGroup, error } = await supabase
+            .from("transactions")
+            .select("*")
+        // .eq("transactions.group_id", groupId)
+
+        if (error) {
+            throw new Error(`[SingleGroup Method] Error getting group data: ${error.message}`)
+        }
+
+        return singleGroup
     }
 }
 

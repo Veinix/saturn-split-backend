@@ -13,7 +13,7 @@ export async function register(
     if (result.error) {
         return reply.status(400).send({ error: result.error.message });
     }
-    return reply.send(result);
+    return reply.status(201).send(result);
 }
 
 export async function login(

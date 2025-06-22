@@ -6,10 +6,13 @@ export enum UserRoles {
     User = "user",
 }
 
-export type RegisterBody = UserAuth & {
+export type RegisterBody = {
+    password: string,
+    full_name: string,
     favorite_color: string | null,
     username: string,
     role: UserRoles | null,
+    last_login_at?: string,
 }
 
 export type LoginBody = {
@@ -17,7 +20,7 @@ export type LoginBody = {
     password: string,
 }
 
-export interface JWTPayload {
+export interface UserJWTPayload {
     userData: {
         partialName: string,
         role: string,
@@ -25,6 +28,6 @@ export interface JWTPayload {
         username: string,
         favoriteColor: string,
     },
-    iat: number,
-    exp: number,
+    iat?: number,
+    exp?: number,
 }

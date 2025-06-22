@@ -29,7 +29,7 @@ export type PublicUser = {
 
 export type UserAuth = {
     password: string,
-    phone_number: string | null,
+    phone_number?: string | null,
     full_name: string,
     last_login_at?: string,
 }

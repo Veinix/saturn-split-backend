@@ -42,7 +42,7 @@ const start = async () => {
         // Initialize
         await app.listen({
             port: parseInt(process.env.BACKEND_PORT as string),
-            host: process.env.BACKEND_HOST,
+            // host: process.env.BACKEND_HOST
         });
     } catch (err) {
         app.log.error(err);

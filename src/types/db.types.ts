@@ -43,3 +43,25 @@ export type Transaction = {
     transaction_type: boolean,
     transaction_date?: Date
 }
+
+type WIPTransaction = {
+    transactionId: string,
+    groupId: string,
+    description: string,
+    category: string,
+    currency?: string, // Currency could come from the group or from the transaction. TBD
+    createdAt: Date,
+}
+
+type WIPTransactionSplit = {
+    transactionId: string,
+    userId: string,
+    amount: number,
+    paid: false
+} | {
+    transactionId: string,
+    userId: string,
+    amount: number,
+    paid: true,
+    paidAt: Date,
+}

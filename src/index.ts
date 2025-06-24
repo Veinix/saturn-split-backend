@@ -22,6 +22,9 @@ const app: FastifyInstance = fastify({
     }
 })
 
+const BACKEND_PORT = process.env.BACKEND_PORT
+const BACKEND_HOST = process.env.BACKEND_HOST
+
 const start = async () => {
     try {
         // * Registering Plugins
@@ -41,8 +44,8 @@ const start = async () => {
 
         // Initialize
         await app.listen({
-            port: parseInt(process.env.BACKEND_PORT as string),
-            // host: process.env.BACKEND_HOST
+            port: parseInt(BACKEND_PORT!) ?? 3000,
+            host: BACKEND_HOST ?? "localhost"
         });
     } catch (err) {
         app.log.error(err);

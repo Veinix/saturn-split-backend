@@ -9,7 +9,8 @@ class JWTUtilities {
     public sign(payload: object, options?: SignOptions): string {
         if (!this.secretKey) throw new Error("JWT secret key is not defined");
 
-        const token = jwt.sign(payload, this.secretKey, { expiresIn: '1h' });
+        const token = jwt.sign(payload, this.secretKey);
+        // const token = jwt.sign(payload, this.secretKey, { expiresIn: '1h' });
         return token
     }
 

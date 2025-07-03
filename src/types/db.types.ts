@@ -1,4 +1,5 @@
 import { UserRoles } from "./auth.types"
+import { Database } from "./database.types"
 
 export type Group = {
     id: string,
@@ -43,25 +44,46 @@ export type Transaction = {
     transaction_type: boolean,
     transaction_date?: Date
 }
+// Aliases
+type GroupsRow = Database["public"]["Tables"]["groups"]["Row"];
+type MembersRow = Database["public"]["Tables"]["group_members"]["Row"];
+type PrivDetailsRow = Database["public"]["Tables"]["private_user_details"]["Row"];
+type PublicUserRow = Database["public"]["Tables"]["public_users"]["Row"]
+type TxRow = Database["public"]["Tables"]["transaction_split"]["Row"]
+type ExpenseRow = Database["public"]["Tables"]["expenses"]["Row"]
 
-type WIPTransaction = {
-    transactionId: string,
-    groupId: string,
-    description: string,
-    category: string,
-    currency?: string, // Currency could come from the group or from the transaction. TBD
-    createdAt: Date,
+export type WIPGroupOverview = {
+    id: string
+    created_by: { username: string, userId: string }
+    name: string
+    description: string | null
+    icon: string | null
+    members: { username: string, userId: string, userRole: GroupMemberRoles }[]
 }
-
-type WIPTransactionSplit = {
-    transactionId: string,
-    userId: string,
-    amount: number,
-    paid: false
-} | {
-    transactionId: string,
-    userId: string,
-    amount: number,
-    paid: true,
-    paidAt: Date,
+export type WIPReturnSingleGroup = {
+    groupData: {
+        groupId: GroupsRow["id"],
+        groupIcon: GroupsRow["icon"],
+        groupDescription: GroupsRow["description"],
+        groupCreatorId: NonNullable<GroupsRow["creator_id"]>,
+    },
+    groupMembers: {
+        userId: MembersRow["user_id"],
+        userRole: NonNullable<MembersRow["group_role"]>,
+        username: PublicUserRow["username"],
+    }[],
+    groupExpenses: {
+        expenseId: ExpenseRow["id"],
+        lenderId: ExpenseRow["lender_id"],
+        amount: ExpenseRow["amount"],
+        transactionDate: NonNullable<ExpenseRow["transaction_date"]>,
+        fullyPaid: ExpenseRow["fully_paid"],
+    }[],
+    groupTransactions: {
+        transactionId: TxRow["transactionId"],
+        lendeeId: TxRow["userId"],
+        amount: TxRow["amount"],
+        paid: TxRow["paid"],
+        paidAt: NonNullable<TxRow["paid_at"]>,
+    }[],
 }

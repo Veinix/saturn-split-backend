@@ -1,6 +1,6 @@
 
 import { FastifyReply, FastifyRequest } from 'fastify';
-import authService from '../3-services/authService';
+import authService from '../3-services/auth-service';
 import { LoginBody, RegisterBody } from '../types/auth.types';
 
 export async function register(

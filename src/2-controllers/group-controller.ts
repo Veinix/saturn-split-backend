@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import groupService from "../3-services/groupsService";
+import groupService from "../3-services/group-service";
 
 export async function fetchGroups(_req: FastifyRequest, reply: FastifyReply) {
     try {
@@ -26,7 +26,10 @@ export async function fetchMyGroups(req: FastifyRequest, reply: FastifyReply) {
 export async function fetchSingleGroup(req: FastifyRequest<{ Params: { groupId: string } }>, reply: FastifyReply) {
     try {
         const { groupId } = req.params
+
+        // Getting the group data
         const singleGroupData = await groupService.getSingleGroup(groupId, reply.server.supabase)
+
         return reply.send(singleGroupData)
     } catch (err: any) {
         req.log.error(err)

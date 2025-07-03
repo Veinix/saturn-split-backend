@@ -3,10 +3,10 @@ configDotenv()
 
 import fastifyCors from "@fastify/cors";
 import fastify, { FastifyInstance } from "fastify";
-import groupRoutes from "./1-routes/groupRoutes";
-import authRoutes from "./1-routes/authRoutes";
+import groupRoutes from "./1-routes/group-routes";
+import authRoutes from "./1-routes/auth-routes";
 import db from "./plugins/db";
-import testRoutes from "./1-routes/testRoutes";
+import testRoutes from "./1-routes/test-routes";
 import auth from "./plugins/auth";
 
 const app: FastifyInstance = fastify({

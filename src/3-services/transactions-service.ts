@@ -7,6 +7,7 @@ type TemporaryExpenseType = {
     amount: number,
     transaction_date: string //But actually Date
 }
+
 type TemporarySplitType = {
     transaction_id: string,
     user_id: string,
@@ -33,11 +34,23 @@ class TransactionsService {
         // Return a success (maybe the updated rows?)
     }
 
-    editExistingExpense = async () => {
+    deleteExistingExpense = async (
+        supabase: SupabaseClient,
+        ownerId: string,
+        groupId: string,
+        expenseId: TemporaryExpenseType,
+    ) => {
+        // Check that the expense exists
+        // If not, return error saying that the expense doesn't exist
 
+        // Check that the lender of the expense is the one that sent the request
+        // If not, return error saying "not allowed"
+
+        // If expense exists, and the owner of the expense is the one asking for the deletion,
+        // Delete the expense, and the transactions associated with it, and make sure that the group won't have that expense in it
     }
 
-    deleteExistingExpense = async () => {
+    editExistingExpense = async () => {
 
     }
 
@@ -46,8 +59,7 @@ class TransactionsService {
 
     }
 
-    // Make it possible to pay back partialy amounts of the debt. Not necesarilly the whole debt.
-
+    //TODO (but not mvp) Make it possible to pay back partialy amounts of the debt. Not necesarilly the whole debt.
 
 }
 

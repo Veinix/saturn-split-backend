@@ -2,7 +2,7 @@ import { configDotenv } from "dotenv";
 configDotenv()
 import { FastifyPluginAsync, FastifyRequest, FastifyReply, preHandlerHookHandler } from 'fastify'
 import fp from 'fastify-plugin'
-import authService from "../3-services/authService";
+import authService from "../3-services/auth-service";
 import jwtUtilities from "../5-utilities/jwtUtilitites";
 
 // 1️⃣ Tell TS about request.user

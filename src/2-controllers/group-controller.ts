@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import groupService from "../3-services/group-service";
+import { GroupExpense } from "../types/db.types";
 
 export async function fetchGroups(_req: FastifyRequest, reply: FastifyReply) {
     try {
@@ -37,11 +38,19 @@ export async function fetchSingleGroup(req: FastifyRequest<{ Params: { groupId: 
     }
 }
 
-export async function isUserGroupMember(req: FastifyRequest, reply: FastifyReply) {
-    // try {
-    //     const userId = req.userId
-    //     const groupId = req.params?.groupId ?
-    // } catch (error) {
-
-    // }
+export async function addGroupExpense(
+    req: FastifyRequest<{
+        Params: { groupId: string }
+        Body: GroupExpense
+    }>,
+    reply: FastifyReply
+) {
+    const payload = req.body
+    try {
+        const created = await groupService.addExpense(payload, reply.server.supabase);
+        reply.code(201).send(created);
+    } catch (err) {
+        req.log.error(err, 'Failed to add expense');
+        reply.code(500).send({ error: 'Could not add expense' });
+    }
 }

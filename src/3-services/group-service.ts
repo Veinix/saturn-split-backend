@@ -1,7 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "../types/database.types";
-import { TODO } from "../types/general.types";
-import { GroupMemberRoles, WIPGroupOverview, WIPReturnSingleGroup } from "../types/db.types";
+import { GroupExpense, GroupMemberRoles, WIPGroupOverview, WIPReturnSingleGroup } from "../types/db.types";
 
 class GroupsService {
     async getAllGroups(
@@ -166,6 +165,26 @@ class GroupsService {
             groupExpenses,
             groupTransactions,
         } as WIPReturnSingleGroup;
+    }
+
+    async addExpense(
+        payload: GroupExpense,
+        supabase: SupabaseClient<Database>
+    ): Promise<GroupExpense> {
+        // Insert into your “expenses” table
+        const { data, error } = await supabase
+            .from('expenses')
+            .insert(`
+                group_id: groupId,
+                description: payload.description,
+                amount: payload.amount,
+                paid_by: payload.paidBy,
+                splits: payload.splits,   // if you have a JSONB column
+            `)
+            .single();
+
+        if (error) throw error;
+        return data;
     }
 }
 

@@ -60,6 +60,14 @@ export type WIPGroupOverview = {
     icon: string | null
     members: { username: string, userId: string, userRole: GroupMemberRoles }[]
 }
+export type GroupExpense = {
+    groupId: string,
+    expenseId: ExpenseRow["id"],
+    lenderId: ExpenseRow["lender_id"],
+    amount: ExpenseRow["amount"],
+    transactionDate: NonNullable<ExpenseRow["transaction_date"]>,
+    fullyPaid: ExpenseRow["fully_paid"],
+}
 export type WIPReturnSingleGroup = {
     groupData: {
         groupId: GroupsRow["id"],

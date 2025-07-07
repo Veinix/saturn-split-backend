@@ -12,6 +12,15 @@
             "node"
         ],
         "moduleResolution": "node",
+        "baseUrl": ".",
+        "paths": {
+            "@routes/*": ["./src/1-routes/*"],
+            "@controllers/*": ["./src/2-controllers/*"],
+            "@services/*": ["./src/3-services/*"],
+            "@Utilities/*": ["./src/4-utilities/*"],
+            "@types/*": ["./src/types/*"],
+            "@plugins/*": ["./src/plugins/*"],
+        }
     },
     "include": [
         "src"

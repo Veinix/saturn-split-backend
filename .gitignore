@@ -2,5 +2,5 @@
 *./supabase
 /supabase
 .env
-
+/dist
 *.env

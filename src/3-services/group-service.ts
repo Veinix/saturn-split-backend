@@ -167,25 +167,25 @@ class GroupsService {
         } as WIPReturnSingleGroup;
     }
 
-    async addExpense(
-        payload: GroupExpense,
-        supabase: SupabaseClient<Database>
-    ): Promise<GroupExpense> {
-        // Insert into your “expenses” table
-        const { data, error } = await supabase
-            .from('expenses')
-            .insert(`
-                group_id: groupId,
-                description: payload.description,
-                amount: payload.amount,
-                paid_by: payload.paidBy,
-                splits: payload.splits,   // if you have a JSONB column
-            `)
-            .single();
+    // async addExpense(
+    //     payload: GroupExpense,
+    //     supabase: SupabaseClient<Database>
+    // ): Promise<GroupExpense> {
+    //     // Insert into your “expenses” table
+    //     const { data, error } = await supabase
+    //         .from('expenses')
+    //         .insert(`
+    //             group_id: groupId,
+    //             description: payload.description,
+    //             amount: payload.amount,
+    //             paid_by: payload.paidBy,
+    //             splits: payload.splits,   // if you have a JSONB column
+    //         `)
+    //         .single();
 
-        if (error) throw error;
-        return data;
-    }
+    //     if (error) throw error;
+    //     return data;
+    // }
 }
 
 const groupService = new GroupsService();

@@ -38,19 +38,19 @@ export async function fetchSingleGroup(req: FastifyRequest<{ Params: { groupId: 
     }
 }
 
-export async function addGroupExpense(
-    req: FastifyRequest<{
-        Params: { groupId: string }
-        Body: GroupExpense
-    }>,
-    reply: FastifyReply
-) {
-    const payload = req.body
-    try {
-        const created = await groupService.addExpense(payload, reply.server.supabase);
-        reply.code(201).send(created);
-    } catch (err) {
-        req.log.error(err, 'Failed to add expense');
-        reply.code(500).send({ error: 'Could not add expense' });
-    }
-}
+// export async function addGroupExpense(
+//     req: FastifyRequest<{
+//         Params: { groupId: string }
+//         Body: GroupExpense
+//     }>,
+//     reply: FastifyReply
+// ) {
+//     const payload = req.body
+//     try {
+//         const created = await groupService.addExpense(payload, reply.server.supabase);
+//         reply.code(201).send(created);
+//     } catch (err) {
+//         req.log.error(err, 'Failed to add expense');
+//         reply.code(500).send({ error: 'Could not add expense' });
+//     }
+// }

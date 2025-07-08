@@ -1,6 +1,5 @@
+import groupService from "@services/group-service.js";
 import { FastifyRequest, FastifyReply } from "fastify";
-import groupService from "../3-services/group-service";
-import { GroupExpense } from "../types/db.types";
 
 export async function fetchGroups(_req: FastifyRequest, reply: FastifyReply) {
     try {

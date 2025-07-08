@@ -1,7 +1,8 @@
 
+import { RegisterBody, LoginBody } from "@app-types/auth.types.js";
+import authService from "@services/auth-service.js";
 import { FastifyReply, FastifyRequest } from 'fastify';
-import authService from '../3-services/auth-service';
-import { LoginBody, RegisterBody } from '../types/auth.types';
+
 
 export async function register(
     request: FastifyRequest<{

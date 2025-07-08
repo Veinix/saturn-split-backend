@@ -3,11 +3,11 @@ configDotenv()
 
 import fastifyCors from "@fastify/cors";
 import fastify, { FastifyInstance } from "fastify";
-import groupRoutes from "./1-routes/group-routes";
-import authRoutes from "./1-routes/auth-routes";
-import db from "./plugins/db";
-import testRoutes from "./1-routes/test-routes";
-import auth from "./plugins/auth";
+import groupRoutes from "./1-routes/group-routes.js";
+import auth from "@plugins/auth.js";
+import db from "@plugins/db.js";
+import authRoutes from "@routes/auth-routes.js";
+import testRoutes from "@routes/test-routes.js";
 
 const app: FastifyInstance = fastify({
     logger: {
@@ -22,8 +22,7 @@ const app: FastifyInstance = fastify({
     }
 })
 
-const BACKEND_PORT = process.env.BACKEND_PORT
-const BACKEND_HOST = process.env.BACKEND_HOST ?? "localhost"
+
 
 const start = async () => {
     try {
@@ -44,8 +43,8 @@ const start = async () => {
 
         // Initialize
         await app.listen({
-            port: parseInt(BACKEND_PORT as string),
-            host: BACKEND_HOST
+            port: Number(process.env.PORT) || 3000,
+            host: "0.0.0.0"
         });
     } catch (err) {
         app.log.error(err);

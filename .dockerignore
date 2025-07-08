@@ -1,0 +1,10 @@
+.react-router
+build
+node_modules
+README.md
+node_modules
+build
+dist
+.git
+.vscode
+*.log

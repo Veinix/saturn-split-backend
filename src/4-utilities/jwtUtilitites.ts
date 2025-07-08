@@ -1,7 +1,7 @@
 import { configDotenv } from "dotenv";
 configDotenv()
 import jwt, { JwtPayload, Secret, SignOptions } from "jsonwebtoken";
-import { UserJWTPayload } from "../types/auth.types";
+import { UserJWTPayload } from "../app-types/auth.types.js";
 
 class JWTUtilities {
     private secretKey: Secret = process.env.JWT_SECRET!

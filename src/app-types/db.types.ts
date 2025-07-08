@@ -1,5 +1,5 @@
-import { UserRoles } from "./auth.types"
-import { Database } from "./database.types"
+import { UserRoles } from "@app-types/auth.types.js"
+import { Database } from "@app-types/database.types.js"
 
 export type Group = {
     id: string,

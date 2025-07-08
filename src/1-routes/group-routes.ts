@@ -1,4 +1,4 @@
-import { fetchMyGroups, fetchSingleGroup } from "@controllers/group-controller";
+import { fetchMyGroups, fetchSingleGroup } from "@controllers/group-controller.js";
 import { FastifyInstance } from "fastify";
 
 export default async function groupRoutes(app: FastifyInstance) {

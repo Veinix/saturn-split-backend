@@ -9,13 +9,15 @@
         "fastify-cors": "^6.1.0",
         "fastify-hashids": "^0.0.6",
         "jsonwebtoken": "^9.0.2",
-        "postgres": "^3.4.7"
+        "postgres": "^3.4.7",
+        "tsconfig-paths": "^4.2.0"
     },
     "scripts": {
         "dev": "tsx watch src/index.ts",
         "build": "tsc",
-        "start": "node dist/index.js",
-        "supabase:types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_REF --schema public > src/types/database.types.ts"
+        "start": "node --loader tsconfig-paths/dist/esm-loader.js dist/index.js",
+        "supabase:types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_REF --schema public > src/types/database.types.ts",
+        "typecheck": "tsc --noEmit"
     },
     "type": "module",
     "devDependencies": {

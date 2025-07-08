@@ -1,6 +1,6 @@
+import { Database } from "@app-types/database.types.js";
+import { WIPGroupOverview, GroupMemberRoles, WIPReturnSingleGroup } from "@app-types/db.types.js";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { Database } from "../types/database.types";
-import { GroupExpense, GroupMemberRoles, WIPGroupOverview, WIPReturnSingleGroup } from "../types/db.types";
 
 class GroupsService {
     async getAllGroups(

@@ -1,4 +1,3 @@
-import { UserAuth } from "./db.types";
 
 export enum UserRoles {
     Developer = "developer",

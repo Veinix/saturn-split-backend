@@ -1,9 +1,9 @@
+import { RegisterBody, UserJWTPayload, LoginBody } from "@app-types/auth.types.js";
+import { Database, Tables } from "@app-types/database.types.js";
 import { SupabaseClient } from '@supabase/supabase-js';
-import type { AuthError, User } from '@supabase/supabase-js';
-import { LoginBody, RegisterBody, UserJWTPayload, UserRoles } from '../types/auth.types';
+import type { AuthError } from '@supabase/supabase-js';
+import jwtUtilities from "@utilities/jwtUtilitites.js";
 import { hash, verify } from 'argon2';
-import jwtUtilities from "../5-utilities/jwtUtilitites";
-import { Database, Tables } from '../types/database.types';
 
 class AuthService {
 

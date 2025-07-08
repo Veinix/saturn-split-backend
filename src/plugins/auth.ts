@@ -1,9 +1,15 @@
+import authService from "@services/auth-service.js";
+import jwtUtilities from "@utilities/jwtUtilitites.js";
 import { configDotenv } from "dotenv";
 configDotenv()
 import { FastifyPluginAsync, FastifyRequest, FastifyReply, preHandlerHookHandler } from 'fastify'
-import fp from 'fastify-plugin'
-import authService from "../3-services/auth-service";
-import jwtUtilities from "../5-utilities/jwtUtilitites";
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+// now require the plugin as a CJS module
+const fp = require('fastify-plugin') as (
+    plugin: FastifyPluginAsync,
+    opts?: { name?: string; fastify?: string }
+) => FastifyPluginAsync
 
 // 1️⃣ Tell TS about request.user
 declare module 'fastify' {

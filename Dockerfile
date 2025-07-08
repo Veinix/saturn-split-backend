@@ -32,5 +32,5 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Start the server from the compiled output
-CMD ["node", "--loader", "tsconfig-paths/dist/esm-loader.js", "dist/index.js"]
+CMD ["node", "dist/index.js"]
 

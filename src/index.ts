@@ -8,9 +8,10 @@ import auth from "@plugins/auth.js";
 import db from "@plugins/db.js";
 import authRoutes from "@routes/auth-routes.js";
 import testRoutes from "@routes/test-routes.js";
-
-const app: FastifyInstance = fastify({
-    logger: {
+const isProd = process.env.NODE_ENV === 'production';
+const loggerOptions = isProd
+    ? true                     // built-in JSON logger
+    : {
         transport: {
             target: 'pino-pretty',
             options: {
@@ -20,6 +21,8 @@ const app: FastifyInstance = fastify({
             }
         }
     }
+const app: FastifyInstance = fastify({
+    logger: loggerOptions
 })
 
 

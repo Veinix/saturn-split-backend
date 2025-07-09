@@ -31,7 +31,17 @@ const start = async () => {
     try {
         // * Registering Plugins
         // CORS
-        await app.register(fastifyCors, { origin: "*" });
+        
+await app.register(fastifyCors, {
+  origin: [
+    'https://saturnsplit.app',            // Your production domain
+    'https://www.saturnsplit.app',        // In case you have www
+    'http://localhost:5173'               // Local dev
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+});
+
 
         // Authentication
         await app.register(auth)
